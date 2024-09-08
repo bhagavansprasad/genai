@@ -1,0 +1,20 @@
+@startuml
+skinparam linetype ortho
+
+[GCP Account Setup] --> [GCP CLI Setup]
+[GCP CLI Setup] --> [Enable VERTEX APIs]
+[Enable VERTEX APIs] --> [Create VM with ML Model on Cloud]
+[Create VM with ML Model on Cloud] --> [Query VM from GCP CLI]
+[Create VM with ML Model on Cloud] --> [Selection of Different ML Model]
+
+[Query VM from GCP CLI] --> [Query from SDK]
+[Query VM from GCP CLI] --> [Query from Python Script]
+[Query VM from GCP CLI] --> [Query from Postman]
+[Query VM from GCP CLI] --> [Query from CURL]
+
+[Query from SDK] --> [Query from Postman]
+[Query from SDK] --> [Query from CURL]
+[Query from Python Script] --> [Query from Postman]
+[Query from Python Script] --> [Query from CURL]
+
+@enduml
