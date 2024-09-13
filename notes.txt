@@ -1,5 +1,14 @@
+Keywords
+* word2Vec
+    https://mccormickml.com/2016/04/27/word2vec-resources/
+    
+GlobVe
+Tensorflow
+wordembeddings
+
 Course Link
     https://rathinamtrainers365.sharepoint.com/sites/GenAI
         Navigate to --> Course Content --> Recordings
     bhagavansprasad@gmail.com 
     40
+
