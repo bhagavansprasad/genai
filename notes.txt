@@ -5,6 +5,7 @@ Keywords
 GlobVe
 Tensorflow
 wordembeddings
+Google Cloud Machine Learning
 
 Course Link
     https://rathinamtrainers365.sharepoint.com/sites/GenAI

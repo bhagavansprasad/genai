@@ -109,7 +109,6 @@ def get_document_metadata(
             page = doc[page_num]
 
             text = page.get_text()
-
             (
                 text,
                 page_text_embedding_dict,

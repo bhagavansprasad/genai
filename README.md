@@ -2,6 +2,26 @@
 
 GenerativeAI Course
 
+### Recordings
+
+
+1. GenAI 2024 Training - session 10_52-20240915_190043-Meeting Recording.mp4
+   * Link: [GenAI 2024 Training - session 12_52-20240922_190159-Meeting Recording.mp4](https://rathinamtrainers365.sharepoint.com/:v:/r/sites/GenAI/Shared%20Documents/010-Recordings/GenAI%202024%20Training%20-%20session%2012_52-20240922_190159-Meeting%20Recording.mp4?csf=1&web=1&e=CezlZk)
+	* Topics Discussed
+	- Building Text embeddings from documents
+
+2. GenAI 2024 Training - session 11_52-20240921_190148-Meeting Recording.mp4
+	* Link: [GenAI 2024 Training - session 12_52-20240922_190159-Meeting Recording.mp4](https://rathinamtrainers365.sharepoint.com/:v:/r/sites/GenAI/Shared%20Documents/010-Recordings/GenAI%202024%20Training%20-%20session%2012_52-20240922_190159-Meeting%20Recording.mp4?csf=1&web=1&e=CezlZk)
+	* Topics Discussed
+	- Information on CONTEXT-CACHING
+	- PDF RAG - Build RAG on image on Each page
+	- Save Embeddings to CSV
+	- Load Embeddings from CSV
+	- Prompt question
+
+
+
+
 Setup involved below activities
 ![Setup](./Docs/gcp-setup.png)
 
