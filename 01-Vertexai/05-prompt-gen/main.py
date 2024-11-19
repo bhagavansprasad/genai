@@ -25,19 +25,46 @@ def _is_text_file(filepath):
         # File is not a file text file, doesn't exist, or it is a directory.
         return False
 
+def create_folder_if_not_exists(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        logging.debug(f"Folder created: {folder_path}")
+    else:
+        logging.debug(f"Folder already exists: {folder_path}")
+        
+    return Path(folder_path)
+
+def list_specific_files_in_repo(repo_path):
+    repo = Path(repo_path)
+    allowed_extensions = {".docx", ".pdf", ".html"}  # Allowed file extensions
+    all_files = [
+        str(file)
+        for file in repo.rglob('*')
+        if file.is_file() and file.suffix in allowed_extensions and '.git' not in file.parts
+    ]
+    return all_files
 
 class RAGManager:
-    def __init__(self, base_directory):
-        # Create base directory if it doesn't exist
-        self.base_directory = Path(base_directory)
-        self.base_directory.mkdir(parents=True, exist_ok=True)
+    base_dir = None
+    cache_dir = None
+    vectordb_dir = None
+    
+    def __init__(self, base_dir_path, repos_path, cache_path, vectdb_path):
+        if not os.path.exists(base_dir_path):
+            logging.debug(f"{base_dir_path} Doesnot exists")
+            return None
+        
+        self.base_dir = Path(base_dir_path)
 
-        # Create cache directory
-        self.cache_dir = self.base_directory / ".cache"
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        if not os.path.exists(self.base_dir / repos_path):
+            logging.debug(f"{base_dir_path}/{repos_path} Doesnot exists")
+            return None
 
-        self.vectordb_dir = self.base_directory / ".vectordb"
-
+        self.repos_dir = self.base_dir / repos_path
+        self.cache_dir = create_folder_if_not_exists(self.base_dir / cache_path)
+        self.vectordb_dir = create_folder_if_not_exists(self.base_dir / vectdb_path)
+        
+        return
         # Check for GPU availability. If not available, go with CPU.
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         logging.debug(f"Using device: {self.device}")
@@ -61,20 +88,27 @@ class RAGManager:
         }
 
     def process_all_projects(self):
-        projects = [directory for directory in self.base_directory.iterdir()
-                    if directory.is_dir()
-                    and directory != self.cache_dir
-                    and directory != self.vectordb_dir]
+        projects = [directory for directory in self.repos_dir.iterdir()  if directory.is_dir()]
         logging.debug(f"Found {len(projects)} projects to process.")
 
-        for project in projects:
-            self.process_project(project)
+        for i, project in enumerate(projects, 1):
+            logging.debug(f"\t{i}. {project}")
+            
+        return projects
 
     def process_project(self, project):
+        print()
         logging.debug(f"Processing project: {project.name}")
-        project_dir = self.base_directory / project
-        repos_dir = project_dir / "repos"
-        docs_dir  =  project_dir / "docs"
+        repos_dir = self.repos_dir
+        project_dir = self.base_dir / "userdata" / "repos"
+        docs_dir  =  self.base_dir / "userdata" / "docs"
+        
+        print(f"\trepos_dir   :{repos_dir}")
+        print(f"\tproject_dir :{project_dir}")
+        print(f"\tdocs_dir    :{docs_dir}")
+        
+        # /home/bhagavan/test_repos/userdata/cache/test-repo1.json
+        return
 
         # Create repos and docs directories if they don't exist
         repos_dir.mkdir(parents=True, exist_ok=True)
@@ -167,22 +201,28 @@ git_repos = [
 ]
 
 def main():
-    # GITHUB_TOKEN = os.getenv('GITHUB_GENAI_TOKEN')
-    # print(GITHUB_TOKEN)
-    # REPO_URL = "bhagavansprasad/test-repo1"
-
-    # for repo in git_repos:
-    #     logging.debug(f"Reading repo :{repo}")
-    #     code_files_urls = crawl_git_repo(repo, False, GITHUB_TOKEN)
-    #     for file in code_files_urls:
-    #         logging.debug(f"\t :{file}")
-
-    repos_dir = "/home/bhagavan/test_repos"
-    cache_dir = "./userdata/.cache"
+    base_dir_path = "/home/bhagavan/test_repos"
+    repos_path = "repos"
+    cache_dir_path = "userdata/cache"
+    vector_db_path = "userdata/vectordb"
+    repos_n_files = list(dict())
     
-    rag_manager = RAGManager(base_directory="/home/bhagavan/test_repos")
-    rag_manager.process_all_projects()
-    # list_ipynb_files()
+    rag_manager = RAGManager(base_dir_path, repos_path, cache_dir_path, vector_db_path)
+    repos = rag_manager.process_all_projects()
+
+    for repo in repos:
+        # rag_manager.process_project(repo)
+        print(f"repo :{repo}")
+        files = list_specific_files_in_repo(repo)
+        
+        for file in files:
+            print(file)
+        print()
+        
+        element = {'repo_name': repo.name, 'path' : repo, 'files' : files}
+        repos_n_files.append(element)
+    
+    print(repos_n_files)
     
   
 if __name__ == "__main__":
