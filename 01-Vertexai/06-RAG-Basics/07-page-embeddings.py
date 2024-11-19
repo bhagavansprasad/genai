@@ -55,6 +55,8 @@ def create_chunks_with_overlap(pdf_path, page_number=0, chunk_size=10, overlap=3
 
 # Example usage
 if __name__ == "__main__":
+    print("YET TO IMPLIMENT THIS FUNCTIONALITY")
+    exit(1)
     pdf_file_path = "ramayan.pdf"  # Replace with your PDF file path
     chunks = create_chunks_with_overlap(pdf_file_path, page_number=0, chunk_size=30, overlap=5)
     
