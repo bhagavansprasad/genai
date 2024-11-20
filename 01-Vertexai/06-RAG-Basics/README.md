@@ -9,13 +9,26 @@
 5. Create Chunks from PDF content
 6. Create embenddings for PDF content
 7. Create embenddings for each Page and for whole file
-* 8. Create embenddings for Chunked-text, Page and for whole file
-* 9. Create embenddings and store Pandas Dataframe
-* 10. Load embenddings from Pandas Dataframe
-* 11. Create embenddings and store in VectorDB (ChromaDB)
-* 12. Load embenddings from VectorDB (ChromaDB)
-* 13. Create embenddings from multiple PDF files
-* 14. Create Query and Search
-* 15. Create Query and Search extract 'n' results
-* 16. Create Context with search results and pass to LLM
-
+8. Create embenddings for Chunked-text, Page and for whole file
+9. Create embenddings and store Pandas Dataframe and to csv file
+10. Create embenddings and store Pandas Dataframe and to json file
+11. Load embenddings from csv to Pandas Dataframe *
+12. Load embenddings from json to Pandas Dataframe *
+13. Create Query and Search *
+14. Create Query and Search extract 'n' results *
+15. Create Context with search results and pass to LLM *
+16. Create VectorDB and store string's Embeddings *
+17. Do 'Create' from CRUD operations on VectorDB *
+18. Do 'Read' from CRUD operations on VectorDB *
+19. Do 'Update' from CRUD operations on VectorDB *
+20. Do 'Delete' from CRUD operations on VectorDB *
+21. Create PDF file's embeddings and store in VectorDB *
+22. Load embeddings from csv and store in VectorDB *
+23. Load embeddings from json and store in VectorDB *
+24. Load embenddings from VectorDB (ChromaDB) *
+25. Create Query and search in VectorDB (ChromaDB) *
+26. Create Query and Search extract 'n' results from VectorDB and pass to LLM *
+27. Create embenddings from multiple PDF files *
+28. Create embenddings multiple PDF files and store in different VectorDBs  *
+29. Create query and get the results from different VectorDBs *
+30. Dump VectorDB details *
