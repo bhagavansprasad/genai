@@ -12,8 +12,6 @@ logging.debug("Initialized TextEmbeddingModel")
 def get_text_embedding_from_text_embedding_model(text):
     logging.debug(f"Entering get_text_embedding_from_text_embedding_model with text of length: {len(text)}")
     embeddings = text_embedding_model.get_embeddings([text])
-    # logging.info(f"Obtained embeddings: {embeddings}")
-
     emb_values = [embedding.values for embedding in embeddings]
     text_embedding = emb_values[0]
     logging.debug(f"Extracted embedding values: {text_embedding[:10]}... (truncated for brevity)")
