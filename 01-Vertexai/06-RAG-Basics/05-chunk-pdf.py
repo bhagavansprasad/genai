@@ -21,11 +21,12 @@ def create_chunks_with_overlap(pdf_path, page_number=0, chunk_size=10, overlap=3
     for i in range(0, len(text_bytes) - chunk_size + 1, chunk_size - overlap):
         chunks.append(text_bytes[i:i + chunk_size].strip())
     
+    chunks.append(text_bytes[i+chunk_size:].strip())
     return [chunk.decode('utf-8', errors='ignore') for chunk in chunks]
 
 # Example usage
 def main():
-    pdf_file_path = "ramayan.pdf"  # Replace with your PDF file path
+    pdf_file_path = "user_data/ramayan.pdf"  # Replace with your PDF file path
     chunks = create_chunks_with_overlap(pdf_file_path, page_number=0, chunk_size=30, overlap=5)
     
     print(f"Total Chunks: {len(chunks)}\n")

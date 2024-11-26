@@ -59,7 +59,7 @@ def get_pdf_text(pdf_path):
 def main():
     file_obj_embed = []
     logging.debug("Main function started")
-    pdf_file_path = "cholas.pdf" 
+    pdf_file_path = "user_data/cholas.pdf" 
 
     page_embedings, text_bytes = get_pdf_text(pdf_file_path)
     logging.debug(f"Retrieved text from PDF of length: {len(text_bytes)}")

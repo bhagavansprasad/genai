@@ -134,10 +134,11 @@ def save_to_dataframe_to_csv(pdf_data, csv_path):
     return df
 
 def main():
-    pdf_file_path = "cholas.pdf" 
+    pdf_file_path = "user_data/cholas.pdf" 
     doc_embeddings = get_embeddings_by_page(pdf_file_path)
 
-    pdf_embed_to_csv = pdf_file_path.split(".")[0]+".csv"
+    pdf_embed_to_csv = pdf_file_path.split('.')[0].strip() + '.csv'
+    
     df = save_to_dataframe_to_csv(doc_embeddings, pdf_embed_to_csv)
     logging.info("Process completed successfully.")
     print(df.head())

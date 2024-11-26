@@ -54,7 +54,7 @@ def get_pdf_text(pdf_path):
 
 def main():
     logging.debug("Main function started")
-    pdf_file_path = "ramayan.pdf"  # Replace with your PDF file path
+    pdf_file_path = "user_data/ramayan.pdf"  # Replace with your PDF file path
 
     text_bytes = get_pdf_text(pdf_file_path)
     logging.debug(f"Retrieved text from PDF of length: {len(text_bytes)}")

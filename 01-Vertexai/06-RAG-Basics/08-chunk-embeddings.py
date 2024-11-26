@@ -116,7 +116,7 @@ def get_embeddings_by_page(pdf_path):
 def main():
     file_obj_embed = []
     logging.debug("Main function started")
-    pdf_file_path = "cholas.pdf" 
+    pdf_file_path = "user_data/cholas.pdf" 
     
     doc_embeddings = get_embeddings_by_page(pdf_file_path)
     smart_print_with_list_trimming(doc_embeddings)
