@@ -135,15 +135,13 @@ def save_to_dataframe_to_json(pdf_data, json_path):
 
 def main():
     pdf_file_path = "user_data/cholas.pdf" 
+    json_embd_path = "embeddings/cholas.json" 
     doc_embeddings = get_embeddings_by_page(pdf_file_path)
 
-    pdf_embed_to_json = pdf_file_path.split('.')[0].strip() + '.json'
-
-    df = save_to_dataframe_to_json(doc_embeddings, pdf_embed_to_json)
+    df = save_to_dataframe_to_json(doc_embeddings, json_embd_path)
     logging.info("Process completed successfully.")
 
     print(df.head())
-
 
 if __name__ == "__main__":
     main()

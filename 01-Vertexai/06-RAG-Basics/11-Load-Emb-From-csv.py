@@ -5,7 +5,7 @@ def load_embeddings_from_csv(csv_embeddings):
     return dataframe
 
 def main():
-    csv_embeddings = 'user_data/cholas.csv'
+    csv_embeddings = 'embeddings/cholas.csv'
  
     text_df = load_embeddings_from_csv(csv_embeddings)
 

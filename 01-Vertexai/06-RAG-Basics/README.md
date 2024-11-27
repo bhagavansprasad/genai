@@ -16,9 +16,9 @@
 12. Load embenddings from json to Pandas Dataframe
 13. Create VectorDB and store string's Embeddings
 14. Create PDF file's embeddings and store in VectorDB
-15. Load embeddings from csv and store in VectorDB *
-16. Load embeddings from json and store in VectorDB *
-17. Load embenddings from VectorDB (ChromaDB) *
+15. Load embeddings from csv and store in VectorDB
+16. Load embeddings from json and store in VectorDB
+17. Search embenddings in VectorDB (ChromaDB)
 18. Create Query and Search *
 19. Create Query and Search extract 'n' results *
 20. Create Context with search results and pass to LLM *

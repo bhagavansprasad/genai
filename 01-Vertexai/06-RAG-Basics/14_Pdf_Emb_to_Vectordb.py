@@ -5,16 +5,14 @@ from vertexai.language_models import TextEmbeddingModel
 from chromadb.config import Settings
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
+text_embedding_model = TextEmbeddingModel.from_pretrained("text-embedding-004")
+logging.debug("Initialized TextEmbeddingModel")
 
 def initialize_vector_db(vdb_name, cname):
     logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")
     client = chromadb.PersistentClient(path=vdb_name)
     collection = client.get_or_create_collection(name=cname)
     return collection
-
-text_embedding_model = TextEmbeddingModel.from_pretrained("text-embedding-004")
-logging.debug("Initialized TextEmbeddingModel")
 
 def get_text_embedding(text):
     logging.debug(f"Generating embeddings for text of length: {len(text)}")
@@ -51,10 +49,10 @@ def store_embeddings_in_vectordb(collection, page_embeddings):
             ids=[f"page-{page['page_number']}"],
             embeddings=[page["embedding"]]
         )
-    logging.info("Successfully stored page embeddings in ChromaDB")
+    logging.info(f"Collection '{collection.name}' successfully updated.")
 
 def main():
-    vdb_name = "user_data/pdf-vectorDB"
+    vdb_name = "vectDB/pdf-vectorDB"
     coll_name = "pdf-page-embeddings"
     pdf_path = "user_data/cholas.pdf"
 
@@ -63,7 +61,6 @@ def main():
     page_embeddings = get_pdf_page_embeddings(pdf_path)
 
     store_embeddings_in_vectordb(collection, page_embeddings)
-
     logging.info("Process completed successfully!")
     
     print(collection.get())
