@@ -11,6 +11,7 @@ def main():
 
     print(text_df.head()) 
     print(text_df.columns)
+    print(text_df.columns)
 
     return True
   
