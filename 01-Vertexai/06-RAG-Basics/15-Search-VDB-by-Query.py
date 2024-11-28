@@ -1,18 +1,9 @@
 import chromadb
 import logging
-from vertexai.language_models import TextEmbeddingModel
-
-text_embedding_model = TextEmbeddingModel.from_pretrained("text-embedding-004")
+from embedding_utils import get_text_embedding
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.debug("Initialized TextEmbeddingModel")
-
-def get_text_embedding(text, output_dimensionality=None):
-    logging.debug(f"Generating embeddings for text of length: {len(text)}")
-    embeddings = text_embedding_model.get_embeddings([text], output_dimensionality=output_dimensionality)
-    embedding_values = embeddings[0].values
-    logging.debug(f"Generated embedding with first 5 values: {embedding_values[:5]}")
-    return embedding_values
 
 def get_or_create_vector_db(vdb_name, cname):
     logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")

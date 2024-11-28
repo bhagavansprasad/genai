@@ -7,11 +7,6 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 text_embedding_model = TextEmbeddingModel.from_pretrained("text-embedding-004")
 logging.debug("Initialized TextEmbeddingModel")
 
-def print_keys(d, indent=0):
-    for key, value in d.items():
-        print("  " * indent + str(key))  # Indent based on level
-        if isinstance(value, dict):     # If value is a dictionary, recurse
-            print_keys(value, indent + 1)
 
 def initialize_vector_db(vdb_name, cname):
     logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")

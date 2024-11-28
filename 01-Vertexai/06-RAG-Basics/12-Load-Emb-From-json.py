@@ -6,7 +6,7 @@ def load_embeddings_from_json(text_embeddings_json):
     return dataframe
 
 def main():
-    json_embeddings = 'user_data/cholas.json'
+    json_embeddings = 'embeddings/cholas.json'
  
     text_df = load_embeddings_from_json(json_embeddings)
 

@@ -1,12 +1,8 @@
-import fitz
 import chromadb
 import logging
-from vertexai.language_models import TextEmbeddingModel
-from chromadb.config import Settings
+from embedding_utils import get_pdf_embeddings
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-text_embedding_model = TextEmbeddingModel.from_pretrained("text-embedding-004")
-logging.debug("Initialized TextEmbeddingModel")
 
 def initialize_vector_db(vdb_name, cname):
     logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")
@@ -14,35 +10,14 @@ def initialize_vector_db(vdb_name, cname):
     collection = client.get_or_create_collection(name=cname)
     return collection
 
-def get_text_embedding(text):
-    logging.debug(f"Generating embeddings for text of length: {len(text)}")
-    embeddings = text_embedding_model.get_embeddings([text])
-    embedding_values = embeddings[0].values
-    logging.debug(f"Generated embedding with first 5 values: {embedding_values[:5]}")
-    return embedding_values
-
-def get_pdf_page_embeddings(pdf_path):
-    logging.debug(f"Processing PDF: {pdf_path}")
-    page_embeddings = []
-
-    with fitz.open(pdf_path) as pdf:
-        logging.debug(f"Opened PDF with {len(pdf)} pages")
-        for page_number, page in enumerate(pdf, start=1):
-            page_text = page.get_text("text")
-            logging.debug(f"Extracted text from page {page_number}: {page_text[:100]}... (truncated)")
-            
-            embedding = get_text_embedding(page_text)
-            page_embeddings.append({
-                "page_number": page_number,
-                "text": page_text,
-                "embedding": embedding
-            })
-
-    return page_embeddings
-
 def store_embeddings_in_vectordb(collection, page_embeddings):
     logging.debug("Storing page embeddings into ChromaDB")
+    print(page_embeddings)
+    print(type(page_embeddings))
+    exit(1)
     for page in page_embeddings:
+        print(page.keys())
+        exit(1)
         collection.upsert(
             documents=[page["text"]],
             metadatas=[{"page_number": page["page_number"]}],
@@ -58,7 +33,7 @@ def main():
 
     collection = initialize_vector_db(vdb_name, coll_name)
 
-    page_embeddings = get_pdf_page_embeddings(pdf_path)
+    page_embeddings = get_pdf_embeddings(pdf_path)
 
     store_embeddings_in_vectordb(collection, page_embeddings)
     logging.info("Process completed successfully!")

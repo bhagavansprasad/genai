@@ -1,33 +1,18 @@
 import chromadb
 import logging
-from vertexai.language_models import TextEmbeddingModel
-
-text_embedding_model = TextEmbeddingModel.from_pretrained("text-embedding-004")
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.debug("Initialized TextEmbeddingModel")
+from embedding_utils import get_text_embedding_from_text_embedding_model
 
 def get_or_create_vector_db(vdb_name, cname):
-    logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")
     client = chromadb.PersistentClient(path=vdb_name)
-
-    logging.debug(f"Fetching or creating collection with name: {cname}")
     collection = client.get_or_create_collection(name=cname)
 
     return collection    
-
-def get_text_embedding(text, output_dimensionality=None):
-    logging.debug(f"Generating embeddings for text of length: {len(text)}")
-    embeddings = text_embedding_model.get_embeddings([text], output_dimensionality=output_dimensionality)
-    embedding_values = embeddings[0].values
-    logging.debug(f"Generated embedding with first 5 values: {embedding_values[:5]}")
-    return embedding_values
 
 def vdb_store_text_embeddings(vdb_collection):
     ids = ["1", "2", "3"]
     metadatas = [{"type": "system"}, {"type": "script"}, {"type": "script"}]
     documents = ["C Programming Language", "Java Script", "Python Scripting and Programming Language"]
-    doc_embeddings = [get_text_embedding(doc, 5) for doc in documents]
+    doc_embeddings = [get_text_embedding_from_text_embedding_model(doc, 5) for doc in documents]
     print(doc_embeddings)
     
     logging.debug(f"Upserting documents into the collection")
