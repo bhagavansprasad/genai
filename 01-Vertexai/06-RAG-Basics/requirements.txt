@@ -1,0 +1,7 @@
+chromadb
+pymupdf==1.24.14 # fitz
+numpy
+pandas
+setuptools
+vertexai
+

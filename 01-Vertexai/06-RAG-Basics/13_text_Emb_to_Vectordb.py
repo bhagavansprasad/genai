@@ -1,12 +1,8 @@
 import chromadb
 import logging
-from embedding_utils import get_text_embedding_from_text_embedding_model
-
-def get_or_create_vector_db(vdb_name, cname):
-    client = chromadb.PersistentClient(path=vdb_name)
-    collection = client.get_or_create_collection(name=cname)
-
-    return collection    
+from chromadb_utils import get_or_create_vector_db
+from chromadb_utils import chromadb_store_data
+from embeddings_utils import get_text_embedding_from_text_embedding_model
 
 def vdb_store_text_embeddings(vdb_collection):
     ids = ["1", "2", "3"]
@@ -20,15 +16,8 @@ def vdb_store_text_embeddings(vdb_collection):
     logging.debug(f"Metadata: {metadatas}")
     logging.debug(f"Documents: {documents}")
     logging.debug(f"embeddings: {doc_embeddings}")
-    
-    for i in range(len(ids)):
-        vdb_collection.upsert(
-            ids=ids[i],
-            metadatas=metadatas[i],
-            documents=documents[i],
-            embeddings=doc_embeddings[i],
-        )
 
+    chromadb_store_data(vdb_collection, ids=ids, metadatas=metadatas, documents=documents, embeddings=doc_embeddings)
     logging.info(f"Collection '{vdb_collection.name}' successfully updated.")
     return True
 

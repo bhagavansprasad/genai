@@ -1,7 +1,9 @@
 # RAG Basics
-
-## Content
-
+## Setup
+```sh
+pip install .
+```
+## Content - Different operations on VectorDB (CromaDB)
 1. List all files in a folder
 2. List all files from a git repo cloned folder
 3. List only pdf files from cloned folder
@@ -16,11 +18,11 @@
 12. Load embenddings from json to Pandas Dataframe
 13. Basic String embeddings to VectorDB
 14. Search VectorDB by ID
-15. Search VectorDB by Query *
-16. Create PDF file's embeddings and store in VectorDB
-17. Load embeddings from csv and store in VectorDB
-18. Load embeddings from json and store in VectorDB
-19. Search embenddings in VectorDB (ChromaDB)
+15. Search VectorDB by Query
+16. Create PDF file's embeddings and store in VectorDB *
+17. Load embeddings from csv and store in VectorDB *
+18. Load embeddings from json and store in VectorDB *
+19. Search embenddings in VectorDB (ChromaDB) *
 20. Create Query and Search *
 19. Create Query and Search extract 'n' results *
 20. Create Context with search results and pass to LLM *

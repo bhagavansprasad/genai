@@ -1,4 +1,4 @@
-from embedding_utils import get_pdf_text_chunks
+from embeddings_utils import get_pdf_text_chunks
 
 def main():
     pdf_file_path = "user_data/ramayan.pdf"  

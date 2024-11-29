@@ -13,3 +13,5 @@ def smart_print_with_list_trimming(dictionary, max_item_length=20, max_list_item
 
     trimmed_dict = {k: trim_value(v) for k, v in dictionary.items()}
     pprint(trimmed_dict)
+    print("-" * 40)
+    print()

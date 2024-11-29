@@ -1,5 +1,5 @@
 from dump_utils import smart_print_with_list_trimming
-from embedding_utils import get_pdf_embeddings
+from embeddings_utils import get_pdf_embeddings
 
 import logging
 logging.basicConfig(level=logging.DEBUG)

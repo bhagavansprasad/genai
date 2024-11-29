@@ -1,6 +1,7 @@
 import logging
 import fitz
 from vertexai.language_models import TextEmbeddingModel
+from typing import Dict, Optional, Type, TypeVar
 
 def create_chunks_with_overlap(text, page_number=0, chunk_size=256, overlap=32):
     chunks = []
@@ -27,7 +28,7 @@ def get_pdf_text(pdf_path):
     logging.debug(f"Entering get_pdf_text with pdf_path: {pdf_path}")
     pdf_text = ""
 
-    with fitz.open(pdf_path) as pdf:
+    with fitz.Document(pdf_path) as pdf:
         logging.debug(f"Opened PDF file: {pdf_path}, total pages: {len(pdf)}")
         for page_number, page in enumerate(pdf, start=1):
             page_text = page.get_text("text")
@@ -43,13 +44,13 @@ def get_pdf_page_embeddings(pdf_path):
     pdf_text = ""
     pages_embed = []
 
-    with fitz.open(pdf_path) as pdf:
+    with fitz.Document(pdf_path) as pdf:
         logging.debug(f"Opened PDF file: {pdf_path}, total pages: {len(pdf)}")
         for page_number, page in enumerate(pdf, start=1):
             page_text = page.get_text("text")
             logging.debug(f"Extracted text from page {page_number}: {page_text[:100]}... (truncated for brevity)")
             
-            page_embed = get_embeddings_by_text(page_text)
+            page_embed = get_texts_embeddings(page_text)
             page_embed['page_number'] = page_number
             pages_embed.append(page_embed)
             
@@ -71,8 +72,8 @@ def get_text_embedding_from_text_embedding_model(text, output_dimensionality=Non
     return text_embedding
 
 
-def get_embeddings_by_text(text_data):
-    logging.debug(f"Entering get_embeddings_by_text with text_data of length: {len(text_data)}")
+def get_texts_embeddings(text_data):
+    logging.debug(f"Entering get_texts_embeddings with text_data of length: {len(text_data)}")
     embeddings_dict = {}
 
     if not text_data:
@@ -81,8 +82,7 @@ def get_embeddings_by_text(text_data):
 
     text_embed = get_text_embedding_from_text_embedding_model(text=text_data)
     embeddings_dict["text"] = text_data
-    embeddings_dict["text_embedding"] = text_embed
-    logging.debug(f"Generated embeddings_dict with keys: {list(embeddings_dict.keys())}")
+    embeddings_dict["text-embedding"] = text_embed
 
     return embeddings_dict
 
@@ -98,27 +98,40 @@ def get_text_embedding(text, output_dimensionality=None):
 def get_chunk_embed(chunks):
     chunk_embeds = []
     for chunk_id, chunk in enumerate(chunks, 1):
-        chunk_embed = get_embeddings_by_text(chunk)
+        chunk_embed = get_texts_embeddings(chunk)
         chunk_embeds.append({
-            "chunk_id": chunk_id,
-            "text": chunk,
-            "embedding": chunk_embed["text_embedding"]
+            "chunk-id": f'chunk-id-{chunk_id}',
+            "chunk-number": chunk_id,
+            "chunk-text": chunk,
+            "chunk-embedding": chunk_embed["text-embedding"]
         })
     return chunk_embeds
 
 def get_pdf_embeddings(pdf_path):
     logging.debug(f"Entering get_pdf_text with pdf_path: {pdf_path}")
     pdf_data = {
-        "file_name": pdf_path.split("/")[-1],
-        "file_text": {
-            "text": "",
-            "embedding": []
-        },
-        "pages": [],
-        "chunks": []
+        "file-id": str(),
+        "file-name": str(),
+        "file-path": str(),
+        "file-text": str(),
+        "file-embedding": list(),
+        "pages": [
+            # {'page-id': 'page-id-1', 'page-number': 1, 'page-text': '', 'page-embedding': []},
+            # {'page-id': str(), 'page-number': int(), 'page-text': str(), 'page-embedding': list()},
+            # ...
+        ],
+        "chunks": [
+            # {'chunk-id': 'chunk-id-1', 'chunk-number': 1, 'chunk-text': '', 'chunk-embedding': []},
+            # {'chunk-id': str(), 'chunk-number': int(), 'chunk-text': str(), 'chunk-embedding': list()},
+            # ...
+        ]
     }
 
-    with fitz.open(pdf_path) as pdf:
+    pdf_data['file-id'] = pdf_path.split("/")[-1]
+    pdf_data['file-name'] = pdf_path.split("/")[-1]
+    pdf_data['file-path'] = "/".join(pdf_path.split("/")[:-1]) 
+
+    with fitz.Document(pdf_path) as pdf:
         logging.debug(f"Opened PDF file: {pdf_path}, total pages: {len(pdf)}")
         full_text = ""
 
@@ -126,20 +139,21 @@ def get_pdf_embeddings(pdf_path):
             page_text = page.get_text("text")
             logging.debug(f"Extracted text from page {page_number}: {page_text[:100]}... (truncated for brevity)")
 
-            page_embed = get_embeddings_by_text(page_text)
+            page_embed = get_texts_embeddings(page_text)
             pdf_data["pages"].append({
-                "page_number": page_number,
-                "text": page_embed["text"],
-                "embedding": page_embed["text_embedding"]
+                "page-id": f'page-id-{page_number}',
+                'page-number': page_number,
+                "page-text": page_text,
+                "page-embedding": page_embed['text-embedding']
             })
 
             full_text += page_text
 
-        pdf_data["file_text"]["text"] = full_text
-        pdf_data["file_text"]["embedding"] = get_text_embedding_from_text_embedding_model(full_text)
+    pdf_data["file-text"] = full_text
+    pdf_data["file-embedding"] = get_text_embedding_from_text_embedding_model(full_text)
 
-        chunks = create_chunks_with_overlap(full_text)
-        pdf_data["chunks"] = get_chunk_embed(chunks)
+    chunks = create_chunks_with_overlap(full_text)
+    pdf_data["chunks"] = get_chunk_embed(chunks)
 
     logging.debug("Completed processing PDF file.")
     return pdf_data
