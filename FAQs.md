@@ -6,4 +6,6 @@ Would performing RAG solely on chunked text have been sufficient?
 
 2. If context caching is enabled, how does the LLM process queries without utilizing RAG?
 What is the mechanism by which the LLM searches and retrieves relevant information from the cached context?
+
+3. How to get Prompt gets refined?
 ```

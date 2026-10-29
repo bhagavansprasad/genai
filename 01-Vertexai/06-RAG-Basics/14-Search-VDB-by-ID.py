@@ -5,9 +5,9 @@ def main():
     vdb_name = "vectDB/progrmminVDB"
     coll_name = "programming"
     
-    vdb = get_or_create_vector_db(vdb_name, coll_name)
+    collection = get_or_create_vector_db(vdb_name, coll_name)
 
-    retval = vdb_search_by_id(vdb, "1")
+    retval = vdb_search_by_id(collection, "1")
     print(retval)
     return True
   

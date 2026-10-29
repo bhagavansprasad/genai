@@ -54,7 +54,7 @@ def create_docs_from_sources(source_files):
         
     return docs_list
 
-def text_split_to_embend(docs_list):
+def text_split_to_embed(docs_list):
     text_splitter = RecursiveCharacterTextSplitter.from_language(
         language=Language.PYTHON,
         chunk_size=2000,
@@ -74,7 +74,7 @@ def get_texts_by_local_folder():
         print(f"\t{file['url']}")
     
     docs_list = create_docs_from_sources(code_files)
-    texts = text_split_to_embend(docs_list)
+    texts = text_split_to_embed(docs_list)
     
     print()
     return texts

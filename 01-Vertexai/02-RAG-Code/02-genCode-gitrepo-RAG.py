@@ -70,7 +70,7 @@ def create_docs_from_sources(source_files):
         
     return docs_list
 
-def text_split_to_embend(docs_list):
+def text_split_to_embed(docs_list):
     text_splitter = RecursiveCharacterTextSplitter.from_language(
         language=Language.PYTHON,
         chunk_size=2000,
@@ -89,7 +89,7 @@ def get_texts_by_git_repo():
     code_files_urls = list_py_files_github(repo_owner, repo_name, branch)
     docs_list = create_docs_from_sources(code_files_urls)
 
-    texts = text_split_to_embend(docs_list)
+    texts = text_split_to_embed(docs_list)
     return texts
 
 # Rate Limiter function

@@ -1,7 +1,7 @@
 import pandas as pd
 import chromadb
 import logging
-from chromadb_utils import initialize_vector_db
+from chromadb_utils import get_or_create_vector_db
 from chromadb_utils import pdf_store_embeddings_in_vectordb
 from vertexai.language_models import TextEmbeddingModel
 
@@ -26,7 +26,7 @@ def main():
     print(text_df.columns)
     
     data = text_df.to_dict()
-    collection = initialize_vector_db(vdb_name, coll_name)
+    collection = get_or_create_vector_db(vdb_name, coll_name)
     pdf_store_embeddings_in_vectordb(collection, data)
     return True
   

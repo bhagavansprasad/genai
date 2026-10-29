@@ -3,6 +3,7 @@ import logging
 from embeddings_utils import get_text_embedding
 
 def get_or_create_vector_db(vdb_name, cname):
+    logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")
     client = chromadb.PersistentClient(path=vdb_name)
     collection = client.get_or_create_collection(name=cname)
 
@@ -78,12 +79,27 @@ def vdb_search_by_id(collection, id_value=None):
     results = collection.get(ids=[id_value], include=["documents", "metadatas", "embeddings"])
     return results
 
-def vdb_search_by_query(collection, query_text=None):
-    query_embedding = get_text_embedding(query_text, 5)
-    return collection.query(query_embeddings=[query_embedding], n_results=5)
+def vdb_search_by_query(collection, query_text=None, n_results=5):
+    query_embedding = get_text_embedding(query_text)
+    return collection.query(query_embeddings=[query_embedding], n_results=n_results)
 
-def initialize_vector_db(vdb_name, cname):
-    logging.debug(f"Initializing ChromaDB PersistentClient with path: {vdb_name}")
-    client = chromadb.PersistentClient(path=vdb_name)
-    collection = client.get_or_create_collection(name=cname)
-    return collection
+def vdb_search_by_query_ids(collection, query_text=None, n_results=5, only_chunks=False):
+    query_embedding = get_text_embedding(query_text)
+    retval = collection.query(query_embeddings=[query_embedding])
+    
+    chunk_index = []
+    ids = [[]]
+    documents = [[]]
+    distances = [[]]
+    
+    for i, id in enumerate(retval['ids'][0]):
+        if 'chunk'.lower() in id.lower():
+            chunk_index.append(i)
+            ids[0].append(retval['ids'][0][i])
+            documents[0].append(retval['documents'][0][i])
+            distances[0].append(retval['distances'][0][i])
+        
+        if (i == n_results-1):
+            break
+    
+    return {'ids': ids, 'documents': documents, 'distances': distances}

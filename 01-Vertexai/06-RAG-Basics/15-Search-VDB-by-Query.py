@@ -8,11 +8,11 @@ def main():
     vdb_name = "vectDB/progrmminVDB"
     coll_name = "programming"
     
-    vdb = get_or_create_vector_db(vdb_name, coll_name)
+    collection = get_or_create_vector_db(vdb_name, coll_name)
     logging.debug(f"Success: VectorDB is created")
 
     query_text = "Programming Language"
-    retval = vdb_search_by_query(vdb, query_text)
+    retval = vdb_search_by_query(collection, query_text)
     
     print(retval)
     return True

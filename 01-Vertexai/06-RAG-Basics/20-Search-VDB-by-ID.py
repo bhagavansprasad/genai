@@ -1,6 +1,6 @@
 import logging
 from dump_utils import smart_print_with_list_trimming
-from chromadb_utils import initialize_vector_db
+from chromadb_utils import get_or_create_vector_db
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -20,7 +20,7 @@ def main():
     vdb_name = "vectDB/pdf-vectorDB"
     coll_name = "pdf-page-embeddings"
 
-    collection = initialize_vector_db(vdb_name, coll_name)
+    collection = get_or_create_vector_db(vdb_name, coll_name)
 
     print("Dumping ChromaDB content...")
     retval = read_collection_by_name(collection)

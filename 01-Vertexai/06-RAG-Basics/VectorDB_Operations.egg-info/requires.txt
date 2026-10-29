@@ -1,0 +1,6 @@
+chromadb
+numpy
+pandas
+pymupdf==1.24.14
+setuptools
+vertexai
